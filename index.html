@@ -1,0 +1,733 @@
+<!doctype html>
+<html lang="hu">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Prime Reps | Replica Sneakers</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Source+Sans+3:wght@400;500;600;700&display=swap");
+
+      :root {
+        --bg: #0a0a0a;
+        --panel: #121212;
+        --panel-soft: #1a1a1a;
+        --accent: #29d4b3;
+        --accent-2: #ff7a59;
+        --text: #f5f6fa;
+        --muted: #a8b0c2;
+        --chip: #23283a;
+        --white: #ffffff;
+        --line: rgba(245, 246, 250, 0.1);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Source Sans 3", sans-serif;
+        background: radial-gradient(circle at 20% 10%, #1a1e2c, var(--bg) 55%);
+        color: var(--text);
+      }
+
+      .topbar {
+        background: rgba(15, 16, 22, 0.9);
+        color: var(--white);
+        padding: 14px 28px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        border-bottom: 1px solid var(--line);
+        position: sticky;
+        top: 0;
+        z-index: 5;
+      }
+
+      .logo {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 28px;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+      }
+
+      .logo span {
+        color: var(--accent);
+      }
+
+      .socials {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+
+      .social-btn {
+        background: linear-gradient(120deg, var(--accent), #6bffe5);
+        color: #0b0e13;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        padding: 8px 12px;
+        border-radius: 999px;
+        font-size: 12px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        cursor: pointer;
+      }
+
+      .filters {
+        background: var(--panel);
+        padding: 24px 28px;
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 22px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .filter-block h4 {
+        margin: 0 0 10px;
+        font-size: 14px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 1.6px;
+        color: var(--muted);
+      }
+
+      .chips {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
+      .chip {
+        background: var(--chip);
+        color: var(--text);
+        border: 1px solid transparent;
+        padding: 8px 12px;
+        border-radius: 10px;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: transform 0.15s ease, border-color 0.15s ease;
+      }
+
+      .chip:hover {
+        transform: translateY(-2px);
+        border-color: var(--accent);
+      }
+
+      .chip.is-active {
+        border-color: var(--accent);
+        box-shadow: 0 0 0 1px rgba(41, 212, 179, 0.35);
+      }
+
+      .notice {
+        margin: 18px 28px 0;
+        background: linear-gradient(120deg, rgba(41, 212, 179, 0.2), rgba(255, 122, 89, 0.22));
+        color: var(--text);
+        padding: 16px 18px;
+        border-radius: 12px;
+        display: flex;
+        gap: 14px;
+        align-items: flex-start;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+      }
+
+      .notice strong {
+        display: block;
+        font-size: 14px;
+        margin-bottom: 4px;
+      }
+
+      .notice p {
+        margin: 0;
+        font-size: 13px;
+        line-height: 1.4;
+      }
+
+      .section-title {
+        text-align: center;
+        margin: 36px 0 18px;
+        font-family: "Bebas Neue", sans-serif;
+        font-size: 30px;
+        letter-spacing: 1px;
+      }
+
+      .carousel {
+        position: relative;
+        padding: 0 28px 36px;
+      }
+
+      .carousel-track {
+        display: grid;
+        grid-auto-flow: column;
+        grid-auto-columns: minmax(140px, 1fr);
+        gap: 18px;
+        overflow-x: auto;
+        padding-bottom: 8px;
+        scroll-snap-type: x mandatory;
+      }
+
+      .card {
+        background: var(--panel-soft);
+        border-radius: 16px;
+        padding: 12px;
+        text-align: center;
+        scroll-snap-align: start;
+        box-shadow: 0 10px 26px rgba(0, 0, 0, 0.35);
+        border: 1px solid rgba(255, 255, 255, 0.04);
+      }
+
+      .card img {
+        width: 100%;
+        height: 90px;
+        object-fit: contain;
+        display: block;
+        margin: 8px auto 10px;
+        filter: drop-shadow(0 8px 12px rgba(0, 0, 0, 0.35));
+        border-radius: 12px;
+        background: #ffffff;
+      }
+
+      .card h5 {
+        margin: 0;
+        font-size: 13px;
+        font-weight: 600;
+      }
+
+      .card span {
+        display: block;
+        margin-top: 6px;
+        font-size: 12px;
+        color: var(--muted);
+      }
+
+      .arrow {
+        position: absolute;
+        top: 48%;
+        transform: translateY(-50%);
+        width: 34px;
+        height: 34px;
+        border-radius: 50%;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        background: var(--panel-soft);
+        display: grid;
+        place-items: center;
+        color: var(--text);
+        font-size: 18px;
+        cursor: pointer;
+      }
+
+      .arrow.left {
+        left: 8px;
+      }
+
+      .arrow.right {
+        right: 8px;
+      }
+
+      .temp-products {
+        padding: 0 28px 48px;
+      }
+
+      .product-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 18px;
+      }
+
+      .product-card {
+        background: var(--panel);
+        border-radius: 16px;
+        padding: 16px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        box-shadow: 0 10px 22px rgba(0, 0, 0, 0.35);
+        display: grid;
+        gap: 10px;
+      }
+
+      .product-card img {
+        width: 100%;
+        height: 140px;
+        object-fit: cover;
+        border-radius: 12px;
+        background: #0b0e13;
+      }
+
+      .product-meta {
+        display: flex;
+        justify-content: space-between;
+        font-size: 12px;
+        color: var(--muted);
+      }
+
+      .product-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 4px 8px;
+        border-radius: 999px;
+        background: rgba(255, 122, 89, 0.16);
+        border: 1px solid rgba(255, 122, 89, 0.4);
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        color: var(--text);
+      }
+
+      .product-actions {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
+      .btn {
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        background: var(--panel-soft);
+        color: var(--text);
+        padding: 8px 12px;
+        border-radius: 10px;
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+
+      .btn.primary {
+        background: linear-gradient(120deg, var(--accent), #6bffe5);
+        color: #0b0e13;
+        border: 0;
+      }
+
+      .modal {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.55);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+        z-index: 20;
+      }
+
+      .modal.is-visible {
+        display: flex;
+      }
+
+      .modal-card {
+        background: #ffffff;
+        color: #1a1a1a;
+        border-radius: 20px;
+        width: min(520px, 92vw);
+        padding: 26px 28px 22px;
+        text-align: center;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+      }
+
+      .modal-card img {
+        width: 100%;
+        height: 260px;
+        object-fit: contain;
+        background: #ffffff;
+        border-radius: 14px;
+      }
+
+      .modal-card h3 {
+        margin: 14px 0 6px;
+        font-size: 20px;
+      }
+
+      .modal-card p {
+        margin: 0 0 14px;
+        color: #6b6b6b;
+        font-weight: 600;
+      }
+
+      .modal-close {
+        border: 0;
+        background: #1f1f1f;
+        color: #ffffff;
+        padding: 10px 16px;
+        border-radius: 10px;
+        font-size: 12px;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        cursor: pointer;
+      }
+
+      .hero {
+        padding: 32px 28px 8px;
+        display: grid;
+        grid-template-columns: 1.1fr 0.9fr;
+        gap: 22px;
+        align-items: center;
+      }
+
+      .hero-card {
+        background: var(--panel-soft);
+        border-radius: 18px;
+        padding: 18px;
+        border: 1px solid rgba(255, 255, 255, 0.06);
+      }
+
+      .hero-title {
+        font-family: "Bebas Neue", sans-serif;
+        font-size: clamp(28px, 4vw, 44px);
+        margin: 0 0 10px;
+      }
+
+      .hero p {
+        margin: 0;
+        color: var(--muted);
+      }
+
+      .hero-kpis {
+        margin-top: 14px;
+        display: flex;
+        gap: 16px;
+        flex-wrap: wrap;
+        font-size: 12px;
+        color: var(--muted);
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 10px;
+        border-radius: 999px;
+        background: rgba(41, 212, 179, 0.12);
+        border: 1px solid rgba(41, 212, 179, 0.4);
+        font-size: 12px;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+      }
+
+      @media (max-width: 900px) {
+        .filters {
+          grid-template-columns: 1fr;
+        }
+
+        .hero {
+          grid-template-columns: 1fr;
+        }
+
+        .product-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      @media (max-width: 640px) {
+        .product-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="topbar">
+      <div class="logo">PRIME<span>REPS</span></div>
+      <div class="socials">
+        <button class="social-btn">INSTAGRAM</button>
+        <button class="social-btn">FACEBOOK</button>
+        <button class="social-btn">PRIMEREPS.HU</button>
+      </div>
+    </header>
+
+    <section class="hero">
+      <div>
+        <div class="badge">Replica Drops</div>
+        <h1 class="hero-title">Prime Reps</h1>
+        <p>
+          Limitált darabszámú replika cipők, pontos méretek, válogatott színek.
+          Városi tempóra hangolva, gyors visszajelzéssel.
+        </p>
+        <div class="hero-kpis">
+          <span>Heti sneaker drop</span>
+          <span>Valós méretezés</span>
+          <span>Gyors készletfrissítés</span>
+        </div>
+      </div>
+      <div class="hero-card">
+        <strong>Prime Drop: Skyline Pack</strong>
+        <p style="margin: 6px 0 12px; color: var(--muted);">
+          Limitált széria, három szín, prémium anyagérzet.
+        </p>
+        <div class="chips">
+          <button class="chip">Jordan 4</button>
+          <button class="chip">Air Force 1</button>
+          <button class="chip">LV Trainer</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="filters">
+      <div class="filter-block">
+        <h4>Méret</h4>
+        <div class="chips">
+          <button class="chip">38</button>
+          <button class="chip">39</button>
+          <button class="chip">40</button>
+          <button class="chip">41</button>
+          <button class="chip">42</button>
+          <button class="chip">42.5</button>
+          <button class="chip">43</button>
+          <button class="chip">44</button>
+          <button class="chip">44.5</button>
+          <button class="chip">45</button>
+        </div>
+      </div>
+      <div class="filter-block">
+        <h4>Típusok</h4>
+        <div class="chips">
+          <button class="chip">Jordan 4</button>
+          <button class="chip">Nike TN</button>
+          <button class="chip">Air Force 1</button>
+          <button class="chip">Jordan 1</button>
+          <button class="chip">LV Skate</button>
+          <button class="chip">LV Trainer</button>
+          <button class="chip">Nike Shox TL</button>
+          <button class="chip">Dior B30</button>
+          <button class="chip">Nocta Hot Step 2</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="notice">
+      <div>!</div>
+      <div>
+        <strong>FONTOS!</strong>
+        <p>
+          Beszállítási és logisztikai átalakulások miatt jelenleg az érkező termékek nem elérhetőek.
+          Tehát, amik kint vannak az utolsó darabok készleten, várhatóan csak később lesz belőlük
+          újratöltés. Ezért, ha valamiről nem szeretnél lemaradni, most érdemes rendelni belőle.
+          Rendeléseket továbbra is Instagram vagy Facebook üzenetben tudunk fogadni.
+        </p>
+      </div>
+    </section>
+
+    <h2 class="section-title">LEGFRISSEBBEN ÉRKEZTEK</h2>
+
+    <section class="carousel">
+      <button class="arrow left" type="button">‹</button>
+      <button class="arrow right" type="button">›</button>
+      <div class="carousel-track" id="carouselTrack">
+        <article class="card">
+          <img alt="Air Force 1 Supreme Black" src="images/air-force-1-supreme-black.png" />
+          <h5>Air Force 1 Supreme Black</h5>
+          <span>38-45</span>
+        </article>
+        <article class="card">
+          <img alt="Air Force 1 Supreme White" src="images/air-force-1-supreme-white.png" />
+          <h5>Air Force 1 Supreme White</h5>
+          <span>38-45</span>
+        </article>
+        <article class="card">
+          <img alt="LV Skate Fekete" src="images/lv-skate-fekete.png" />
+          <h5>LV Skate Fekete</h5>
+          <span>38-45</span>
+        </article>
+        <article class="card">
+          <img alt="Jordan 4 Metallic Gold" src="images/jordan-4-metallic-gold.png" />
+          <h5>Jordan 4 Metallic Gold</h5>
+          <span>38-45</span>
+        </article>
+        <article class="card">
+          <img alt="LV Skate Bézs" src="images/lv-skate-bezs.png" />
+          <h5>LV Skate Bézs</h5>
+          <span>38-45</span>
+        </article>
+        <article class="card">
+          <img alt="Jordan 1 Travis Reverse Mocha" src="images/jordan-1-travis-reverse-mocha.png" />
+          <h5>Jordan 1 Travis Reverse Mocha</h5>
+          <span>38-45</span>
+        </article>
+      </div>
+    </section>
+
+    <section class="temp-products">
+      <h2 class="section-title">IDEIGLENES TERMÉKEK</h2>
+      <div class="product-grid" id="tempProducts"></div>
+    </section>
+
+    <div class="modal" id="productModal" aria-hidden="true">
+      <div class="modal-card" role="dialog" aria-modal="true">
+        <img id="modalImage" alt="" src="" />
+        <h3 id="modalTitle"></h3>
+        <p id="modalSizes"></p>
+        <button class="modal-close" type="button" id="modalClose">× Bezárás</button>
+      </div>
+    </div>
+
+    <script>
+      const sizeButtons = Array.from(document.querySelectorAll(".filter-block:nth-of-type(1) .chip"));
+      const typeButtons = Array.from(document.querySelectorAll(".filter-block:nth-of-type(2) .chip"));
+      const tempProductsEl = document.getElementById("tempProducts");
+      const modal = document.getElementById("productModal");
+      const modalImage = document.getElementById("modalImage");
+      const modalTitle = document.getElementById("modalTitle");
+      const modalSizes = document.getElementById("modalSizes");
+      const modalClose = document.getElementById("modalClose");
+
+      const tempProducts = [
+        {
+          name: "Air Force 1 Supreme Black",
+          size: "38-45",
+          type: "Air Force 1",
+          price: "HUF 34 900",
+          image: "images/air-force-1-supreme-black.png",
+        },
+        {
+          name: "Air Force 1 Supreme White",
+          size: "38-45",
+          type: "Air Force 1",
+          price: "HUF 34 900",
+          image: "images/air-force-1-supreme-white.png",
+        },
+        {
+          name: "LV Skate Fekete",
+          size: "38-45",
+          type: "LV Skate",
+          price: "HUF 44 900",
+          image: "images/lv-skate-fekete.png",
+        },
+        {
+          name: "Jordan 4 Metallic Gold",
+          size: "38-45",
+          type: "Jordan 4",
+          price: "HUF 39 900",
+          image: "images/jordan-4-metallic-gold.png",
+        },
+        {
+          name: "LV Skate Bézs",
+          size: "38-45",
+          type: "LV Skate",
+          price: "HUF 44 900",
+          image: "images/lv-skate-bezs.png",
+        },
+        {
+          name: "Jordan 1 Travis Reverse Mocha",
+          size: "38-45",
+          type: "Jordan 1",
+          price: "HUF 36 900",
+          image: "images/jordan-1-travis-reverse-mocha.png",
+        },
+      ];
+
+      const state = {
+        size: null,
+        type: null,
+      };
+
+      function renderProducts() {
+        const filtered = tempProducts.filter((item) => {
+          const sizeOk = state.size ? item.size.includes(state.size) : true;
+          const typeOk = state.type ? item.type === state.type : true;
+          return sizeOk && typeOk;
+        });
+
+        tempProductsEl.innerHTML = "";
+
+        if (filtered.length === 0) {
+          const empty = document.createElement("div");
+          empty.className = "product-card";
+          empty.innerHTML = "<strong>Nincs találat.</strong><span class='product-meta'>Próbálj más szűrést.</span>";
+          tempProductsEl.appendChild(empty);
+          return;
+        }
+
+        filtered.forEach((item) => {
+          const card = document.createElement("article");
+          card.className = "product-card";
+          card.innerHTML = `
+            <img alt="${item.name}" src="${item.image}" />
+            <span class="product-tag">Ideiglenes termék</span>
+            <strong>${item.name}</strong>
+            <div class="product-meta">
+              <span>Méret: ${item.size}</span>
+              <span>${item.type}</span>
+            </div>
+            <div class="product-meta">
+              <span>${item.price}</span>
+              <span>Elérhető</span>
+            </div>
+            <div class="product-actions">
+              <button class="btn primary" type="button">Kosárba</button>
+              <button class="btn" type="button">Részletek</button>
+            </div>
+          `;
+          card.addEventListener("click", () => {
+            openModal(item.name, item.size, item.image);
+          });
+          tempProductsEl.appendChild(card);
+        });
+      }
+
+      function setActive(buttons, value) {
+        buttons.forEach((btn) => {
+          const active = btn.textContent.trim() === value;
+          btn.classList.toggle("is-active", active);
+        });
+      }
+
+      sizeButtons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const value = btn.textContent.trim();
+          state.size = state.size === value ? null : value;
+          setActive(sizeButtons, state.size);
+          renderProducts();
+        });
+      });
+
+      typeButtons.forEach((btn) => {
+        btn.addEventListener("click", () => {
+          const value = btn.textContent.trim();
+          state.type = state.type === value ? null : value;
+          setActive(typeButtons, state.type);
+          renderProducts();
+        });
+      });
+
+      const carouselTrack = document.getElementById("carouselTrack");
+      document.querySelector(".arrow.left").addEventListener("click", () => {
+        carouselTrack.scrollBy({ left: -260, behavior: "smooth" });
+      });
+      document.querySelector(".arrow.right").addEventListener("click", () => {
+        carouselTrack.scrollBy({ left: 260, behavior: "smooth" });
+      });
+
+      function openModal(title, sizes, image) {
+        modalImage.src = image;
+        modalImage.alt = title;
+        modalTitle.textContent = title;
+        modalSizes.textContent = sizes;
+        modal.classList.add("is-visible");
+        modal.setAttribute("aria-hidden", "false");
+      }
+
+      function closeModal() {
+        modal.classList.remove("is-visible");
+        modal.setAttribute("aria-hidden", "true");
+      }
+
+      modalClose.addEventListener("click", closeModal);
+      modal.addEventListener("click", (event) => {
+        if (event.target === modal) {
+          closeModal();
+        }
+      });
+
+      document.querySelectorAll(".carousel .card").forEach((card) => {
+        const img = card.querySelector("img");
+        const title = card.querySelector("h5")?.textContent?.trim() || "Termék";
+        const sizes = card.querySelector("span")?.textContent?.trim() || "";
+        card.addEventListener("click", () => {
+          openModal(title, sizes, img?.src || "");
+        });
+      });
+
+      renderProducts();
+    </script>
+  </body>
+</html>
