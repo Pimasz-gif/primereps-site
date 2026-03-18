@@ -27,8 +27,19 @@
       body {
         margin: 0;
         font-family: "Source Sans 3", sans-serif;
-        background: radial-gradient(circle at 20% 10%, #202020, var(--bg) 55%);
+        background: #0a0a0a;
         color: var(--text);
+        position: relative;
+      }
+
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background: url("images/foot-reps-bg.png") center / 70% auto no-repeat;
+        opacity: 0.22;
+        pointer-events: none;
+        z-index: -1;
       }
 
       .topbar {
