@@ -11,8 +11,8 @@
         --bg: #0a0a0a;
         --panel: #121212;
         --panel-soft: #1a1a1a;
-        --accent: #29d4b3;
-        --accent-2: #ff7a59;
+        --accent: #1e90ff;
+        --accent-2: #0b5ec4;
         --text: #f5f6fa;
         --muted: #a8b0c2;
         --chip: #23283a;
@@ -27,7 +27,7 @@
       body {
         margin: 0;
         font-family: "Source Sans 3", sans-serif;
-        background: radial-gradient(circle at 20% 10%, #1a1e2c, var(--bg) 55%);
+        background: radial-gradient(circle at 20% 10%, #202020, var(--bg) 55%);
         color: var(--text);
       }
 
@@ -53,7 +53,7 @@
       }
 
       .logo span {
-        color: var(--accent);
+        color: #000000;
       }
 
       .socials {
@@ -63,8 +63,8 @@
       }
 
       .social-btn {
-        background: linear-gradient(120deg, var(--accent), #6bffe5);
-        color: #0b0e13;
+        background: linear-gradient(120deg, #f2f2f2, #cfcfcf);
+        color: #0b0b0b;
         border: 1px solid rgba(255, 255, 255, 0.1);
         padding: 8px 12px;
         border-radius: 999px;
@@ -81,7 +81,7 @@
         background: var(--panel);
         padding: 24px 28px;
         display: grid;
-        grid-template-columns: 1.1fr 0.9fr;
+        grid-template-columns: 1fr;
         gap: 22px;
         border-bottom: 1px solid var(--line);
       }
@@ -93,6 +93,10 @@
         text-transform: uppercase;
         letter-spacing: 1.6px;
         color: var(--muted);
+      }
+
+      .size-filter {
+        display: none;
       }
 
       .chips {
@@ -162,12 +166,16 @@
 
       .carousel-track {
         display: grid;
-        grid-auto-flow: column;
-        grid-auto-columns: minmax(140px, 1fr);
+        grid-template-columns: repeat(3, minmax(0, 1fr));
         gap: 18px;
-        overflow-x: auto;
-        padding-bottom: 8px;
-        scroll-snap-type: x mandatory;
+      }
+
+      .carousel-empty {
+        display: none;
+        text-align: center;
+        color: var(--muted);
+        font-size: 13px;
+        padding: 12px 0 4px;
       }
 
       .card {
@@ -202,34 +210,6 @@
         margin-top: 6px;
         font-size: 12px;
         color: var(--muted);
-      }
-
-      .arrow {
-        position: absolute;
-        top: 48%;
-        transform: translateY(-50%);
-        width: 34px;
-        height: 34px;
-        border-radius: 50%;
-        border: 1px solid rgba(255, 255, 255, 0.2);
-        background: var(--panel-soft);
-        display: grid;
-        place-items: center;
-        color: var(--text);
-        font-size: 18px;
-        cursor: pointer;
-      }
-
-      .arrow.left {
-        left: 8px;
-      }
-
-      .arrow.right {
-        right: 8px;
-      }
-
-      .temp-products {
-        padding: 0 28px 48px;
       }
 
       .product-grid {
@@ -309,10 +289,17 @@
         justify-content: center;
         padding: 20px;
         z-index: 20;
+        opacity: 0;
+        transition: opacity 0.2s ease;
       }
 
       .modal.is-visible {
         display: flex;
+        opacity: 1;
+      }
+
+      .modal.is-closing {
+        opacity: 0;
       }
 
       .modal-card {
@@ -323,6 +310,38 @@
         padding: 26px 28px 22px;
         text-align: center;
         box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+        transform: translateY(8px) scale(0.96);
+        opacity: 0;
+      }
+
+      .modal.is-visible .modal-card {
+        animation: modal-pop 0.22s ease-out forwards;
+      }
+
+      .modal.is-closing .modal-card {
+        animation: modal-out 0.18s ease-in forwards;
+      }
+
+      @keyframes modal-pop {
+        from {
+          opacity: 0;
+          transform: translateY(8px) scale(0.96);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+      }
+
+      @keyframes modal-out {
+        from {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+        }
+        to {
+          opacity: 0;
+          transform: translateY(8px) scale(0.96);
+        }
       }
 
       .modal-card img {
@@ -413,13 +432,15 @@
           grid-template-columns: 1fr;
         }
 
-        .product-grid {
+        .product-grid,
+        .carousel-track {
           grid-template-columns: repeat(2, minmax(0, 1fr));
         }
       }
 
       @media (max-width: 640px) {
-        .product-grid {
+        .product-grid,
+        .carousel-track {
           grid-template-columns: 1fr;
         }
       }
@@ -427,18 +448,17 @@
   </head>
   <body>
     <header class="topbar">
-      <div class="logo">PRIME<span>REPS</span></div>
+      <div class="logo">FOOT<span>REPS</span></div>
       <div class="socials">
-        <button class="social-btn">INSTAGRAM</button>
-        <button class="social-btn">FACEBOOK</button>
+        <a class="social-btn" href="https://www.instagram.com/footreps.eu/?hl=en" target="_blank" rel="noopener noreferrer">INSTAGRAM</a>
+        <a class="social-btn" href="https://www.facebook.com/people/Footreps-Footreps/pfbid0Se5tnQcN4akMWXwu2AEsBg2NG4BEJuc3TRxpwvbP8ii3TZ3CmTEv2WvJxeeJkJUvl/" target="_blank" rel="noopener noreferrer">FACEBOOK</a>
         <button class="social-btn">PRIMEREPS.HU</button>
       </div>
     </header>
 
     <section class="hero">
       <div>
-        <div class="badge">Replica Drops</div>
-        <h1 class="hero-title">Prime Reps</h1>
+        <h1 class="hero-title">Foot Reps</h1>
         <p>
           Limitált darabszámú replika cipők, pontos méretek, válogatott színek.
           Városi tempóra hangolva, gyors visszajelzéssel.
@@ -449,21 +469,10 @@
           <span>Gyors készletfrissítés</span>
         </div>
       </div>
-      <div class="hero-card">
-        <strong>Prime Drop: Skyline Pack</strong>
-        <p style="margin: 6px 0 12px; color: var(--muted);">
-          Limitált széria, három szín, prémium anyagérzet.
-        </p>
-        <div class="chips">
-          <button class="chip">Jordan 4</button>
-          <button class="chip">Air Force 1</button>
-          <button class="chip">LV Trainer</button>
-        </div>
-      </div>
     </section>
 
     <section class="filters">
-      <div class="filter-block">
+      <div class="filter-block size-filter">
         <h4>Méret</h4>
         <div class="chips">
           <button class="chip">38</button>
@@ -484,71 +493,78 @@
           <button class="chip">Jordan 4</button>
           <button class="chip">Nike TN</button>
           <button class="chip">Air Force 1</button>
-          <button class="chip">Jordan 1</button>
           <button class="chip">LV Skate</button>
           <button class="chip">LV Trainer</button>
-          <button class="chip">Nike Shox TL</button>
-          <button class="chip">Dior B30</button>
-          <button class="chip">Nocta Hot Step 2</button>
         </div>
-      </div>
-    </section>
-
-    <section class="notice">
-      <div>!</div>
-      <div>
-        <strong>FONTOS!</strong>
-        <p>
-          Beszállítási és logisztikai átalakulások miatt jelenleg az érkező termékek nem elérhetőek.
-          Tehát, amik kint vannak az utolsó darabok készleten, várhatóan csak később lesz belőlük
-          újratöltés. Ezért, ha valamiről nem szeretnél lemaradni, most érdemes rendelni belőle.
-          Rendeléseket továbbra is Instagram vagy Facebook üzenetben tudunk fogadni.
-        </p>
       </div>
     </section>
 
     <h2 class="section-title">LEGFRISSEBBEN ÉRKEZTEK</h2>
 
     <section class="carousel">
-      <button class="arrow left" type="button">‹</button>
-      <button class="arrow right" type="button">›</button>
       <div class="carousel-track" id="carouselTrack">
-        <article class="card">
+        <article class="card" data-type="Air Force 1" data-size="38-45">
           <img alt="Air Force 1 Supreme Black" src="images/air-force-1-supreme-black.png" />
           <h5>Air Force 1 Supreme Black</h5>
           <span>38-45</span>
         </article>
-        <article class="card">
+        <article class="card" data-type="Air Force 1" data-size="38-45">
           <img alt="Air Force 1 Supreme White" src="images/air-force-1-supreme-white.png" />
           <h5>Air Force 1 Supreme White</h5>
           <span>38-45</span>
         </article>
-        <article class="card">
-          <img alt="LV Skate Fekete" src="images/lv-skate-fekete.png" />
-          <h5>LV Skate Fekete</h5>
+        <article class="card" data-type="Air Force 1" data-size="38-45">
+          <img alt="Nike Air Force 1 Low White 07" src="images/nike-air-force-1-low-white-07.png" />
+          <h5>Nike Air Force 1 Low White 07</h5>
           <span>38-45</span>
         </article>
-        <article class="card">
-          <img alt="Jordan 4 Metallic Gold" src="images/jordan-4-metallic-gold.png" />
-          <h5>Jordan 4 Metallic Gold</h5>
+        <article class="card" data-type="Air Force 1" data-size="38-45">
+          <img alt="Air Force 1 Triple Black" src="images/air-force-1-triple-black.png" />
+          <h5>Air Force 1 Triple Black</h5>
           <span>38-45</span>
         </article>
-        <article class="card">
+        <article class="card" data-type="Nike TN" data-size="38-45">
+          <img alt="Nike TN 3 Plus Full Fekete (Feher logo)" src="images/nike-tn-3-plus-full-fekete-feher-logo.png" />
+          <h5>Nike TN 3 Plus Full Fekete (Feher logo)</h5>
+          <span>38-45</span>
+        </article>
+        <article class="card" data-type="Nike TN" data-size="38-45">
+          <img alt="Nike Air Max Plus Triple Black" src="images/nike-air-max-plus-triple-black.png" />
+          <h5>Nike Air Max Plus Triple Black</h5>
+          <span>38-45</span>
+        </article>
+        <article class="card" data-type="Jordan 4" data-size="38-45">
+          <img alt="Air Jordan 4 Retro GS 'Black Cat' 2025" src="images/air-jordan-4-retro-gs-black-cat-2025.png" />
+          <h5>Air Jordan 4 Retro GS 'Black Cat' 2025</h5>
+          <span>38-45</span>
+        </article>
+        <article class="card" data-type="Jordan 4" data-size="38-45">
+          <img alt="Jordan 4 White Cement" src="images/jordan-4-white-cement.png" />
+          <h5>Jordan 4 White Cement</h5>
+          <span>38-45</span>
+        </article>
+        <article class="card" data-type="LV Skate" data-size="38-45">
           <img alt="LV Skate Bézs" src="images/lv-skate-bezs.png" />
           <h5>LV Skate Bézs</h5>
           <span>38-45</span>
         </article>
-        <article class="card">
-          <img alt="Jordan 1 Travis Reverse Mocha" src="images/jordan-1-travis-reverse-mocha.png" />
-          <h5>Jordan 1 Travis Reverse Mocha</h5>
+        <article class="card" data-type="LV Skate" data-size="38-45">
+          <img alt="LV Skate Fekete" src="images/lv-skate-fekete.png" />
+          <h5>LV Skate Fekete</h5>
+          <span>38-45</span>
+        </article>
+        <article class="card" data-type="LV Skate" data-size="38-45">
+          <img alt="LV Skate Full Fekete V2" src="images/lv-skate-full-fekete-v2.png" />
+          <h5>LV Skate Full Fekete V2</h5>
+          <span>38-45</span>
+        </article>
+        <article class="card" data-type="LV Trainer" data-size="38-45">
+          <img alt="LV Trainer Fekete Feher" src="images/lv-trainer-fekete-feher.png" />
+          <h5>LV Trainer Fekete Feher</h5>
           <span>38-45</span>
         </article>
       </div>
-    </section>
-
-    <section class="temp-products">
-      <h2 class="section-title">IDEIGLENES TERMÉKEK</h2>
-      <div class="product-grid" id="tempProducts"></div>
+      <div class="carousel-empty" id="carouselEmpty">Nincs találat.</div>
     </section>
 
     <div class="modal" id="productModal" aria-hidden="true">
@@ -561,108 +577,20 @@
     </div>
 
     <script>
-      const sizeButtons = Array.from(document.querySelectorAll(".filter-block:nth-of-type(1) .chip"));
       const typeButtons = Array.from(document.querySelectorAll(".filter-block:nth-of-type(2) .chip"));
-      const tempProductsEl = document.getElementById("tempProducts");
       const modal = document.getElementById("productModal");
       const modalImage = document.getElementById("modalImage");
       const modalTitle = document.getElementById("modalTitle");
       const modalSizes = document.getElementById("modalSizes");
       const modalClose = document.getElementById("modalClose");
 
-      const tempProducts = [
-        {
-          name: "Air Force 1 Supreme Black",
-          size: "38-45",
-          type: "Air Force 1",
-          price: "HUF 34 900",
-          image: "images/air-force-1-supreme-black.png",
-        },
-        {
-          name: "Air Force 1 Supreme White",
-          size: "38-45",
-          type: "Air Force 1",
-          price: "HUF 34 900",
-          image: "images/air-force-1-supreme-white.png",
-        },
-        {
-          name: "LV Skate Fekete",
-          size: "38-45",
-          type: "LV Skate",
-          price: "HUF 44 900",
-          image: "images/lv-skate-fekete.png",
-        },
-        {
-          name: "Jordan 4 Metallic Gold",
-          size: "38-45",
-          type: "Jordan 4",
-          price: "HUF 39 900",
-          image: "images/jordan-4-metallic-gold.png",
-        },
-        {
-          name: "LV Skate Bézs",
-          size: "38-45",
-          type: "LV Skate",
-          price: "HUF 44 900",
-          image: "images/lv-skate-bezs.png",
-        },
-        {
-          name: "Jordan 1 Travis Reverse Mocha",
-          size: "38-45",
-          type: "Jordan 1",
-          price: "HUF 36 900",
-          image: "images/jordan-1-travis-reverse-mocha.png",
-        },
-      ];
+      const carouselTrack = document.getElementById("carouselTrack");
+      const carouselCards = Array.from(document.querySelectorAll(".carousel .card"));
+      const carouselEmpty = document.getElementById("carouselEmpty");
 
       const state = {
-        size: null,
         type: null,
       };
-
-      function renderProducts() {
-        const filtered = tempProducts.filter((item) => {
-          const sizeOk = state.size ? item.size.includes(state.size) : true;
-          const typeOk = state.type ? item.type === state.type : true;
-          return sizeOk && typeOk;
-        });
-
-        tempProductsEl.innerHTML = "";
-
-        if (filtered.length === 0) {
-          const empty = document.createElement("div");
-          empty.className = "product-card";
-          empty.innerHTML = "<strong>Nincs találat.</strong><span class='product-meta'>Próbálj más szűrést.</span>";
-          tempProductsEl.appendChild(empty);
-          return;
-        }
-
-        filtered.forEach((item) => {
-          const card = document.createElement("article");
-          card.className = "product-card";
-          card.innerHTML = `
-            <img alt="${item.name}" src="${item.image}" />
-            <span class="product-tag">Ideiglenes termék</span>
-            <strong>${item.name}</strong>
-            <div class="product-meta">
-              <span>Méret: ${item.size}</span>
-              <span>${item.type}</span>
-            </div>
-            <div class="product-meta">
-              <span>${item.price}</span>
-              <span>Elérhető</span>
-            </div>
-            <div class="product-actions">
-              <button class="btn primary" type="button">Kosárba</button>
-              <button class="btn" type="button">Részletek</button>
-            </div>
-          `;
-          card.addEventListener("click", () => {
-            openModal(item.name, item.size, item.image);
-          });
-          tempProductsEl.appendChild(card);
-        });
-      }
 
       function setActive(buttons, value) {
         buttons.forEach((btn) => {
@@ -671,30 +599,29 @@
         });
       }
 
-      sizeButtons.forEach((btn) => {
-        btn.addEventListener("click", () => {
-          const value = btn.textContent.trim();
-          state.size = state.size === value ? null : value;
-          setActive(sizeButtons, state.size);
-          renderProducts();
+      function applyTypeFilter() {
+        let visibleCount = 0;
+        carouselCards.forEach((card) => {
+          const type = card.dataset.type || "";
+          const show = state.type ? type === state.type : true;
+          card.style.display = show ? "" : "none";
+          if (show) {
+            visibleCount += 1;
+          }
         });
-      });
+        if (carouselEmpty) {
+          carouselEmpty.style.display = visibleCount === 0 ? "block" : "none";
+        }
+        carouselTrack.scrollTo({ top: 0, behavior: "smooth" });
+      }
 
       typeButtons.forEach((btn) => {
         btn.addEventListener("click", () => {
           const value = btn.textContent.trim();
           state.type = state.type === value ? null : value;
           setActive(typeButtons, state.type);
-          renderProducts();
+          applyTypeFilter();
         });
-      });
-
-      const carouselTrack = document.getElementById("carouselTrack");
-      document.querySelector(".arrow.left").addEventListener("click", () => {
-        carouselTrack.scrollBy({ left: -260, behavior: "smooth" });
-      });
-      document.querySelector(".arrow.right").addEventListener("click", () => {
-        carouselTrack.scrollBy({ left: 260, behavior: "smooth" });
       });
 
       function openModal(title, sizes, image) {
@@ -707,8 +634,12 @@
       }
 
       function closeModal() {
-        modal.classList.remove("is-visible");
-        modal.setAttribute("aria-hidden", "true");
+        modal.classList.add("is-closing");
+        setTimeout(() => {
+          modal.classList.remove("is-visible");
+          modal.classList.remove("is-closing");
+          modal.setAttribute("aria-hidden", "true");
+        }, 180);
       }
 
       modalClose.addEventListener("click", closeModal);
@@ -721,13 +652,12 @@
       document.querySelectorAll(".carousel .card").forEach((card) => {
         const img = card.querySelector("img");
         const title = card.querySelector("h5")?.textContent?.trim() || "Termék";
-        const sizes = card.querySelector("span")?.textContent?.trim() || "";
+        const sizes = card.dataset.size || "38-45";
         card.addEventListener("click", () => {
           openModal(title, sizes, img?.src || "");
         });
       });
 
-      renderProducts();
     </script>
   </body>
 </html>
